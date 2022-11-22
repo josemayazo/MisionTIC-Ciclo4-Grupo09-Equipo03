@@ -1,13 +1,18 @@
-const mongoose =require ("mongoose");
+const mongoose = require('mongoose');
+require("dotenv").config();
 
-const host = "localhost";
-const port = "27017";
-const db = "polloxx-db";
-
-exports.mongoConnect = () =>{
-   const mongoStringConnection = `mongodb://${host}:${port}/${db}`; 
-   mongoose.connect(mongoStringConnection);
-   mongoose.Promise = global.Promise;
-   const dbConnection = mongoose.connection;
-   dbConnection.on("error", console.error.bind(console,"Mongo connection error"))
+const dbConnection = async() => {
+   //console.log("HOLIII " + process.env.MONGO_URI);
+   try {
+      await mongoose.connect(process.env.MONGO_URI, {
+         useNewUrlParser: true,
+         useUnifiedTopology: true
+      });
+      console.log('MongoDB connected');
+   } catch (error) {
+      console.log(error, 'Error connecting to MongoDB');
+      throw new Error(error);
+   }
 }
+
+module.exports = { dbConnection };

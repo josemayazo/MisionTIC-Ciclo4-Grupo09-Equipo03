@@ -15,6 +15,7 @@ exports.create = function(req,res){
         direccion: req.body.direccion
     })
 
+    console.log("Holii " + usuario);
     usuario.save(function(err){
         if(err){
             console.error(err),
